@@ -70,9 +70,9 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="button1" destination="BMo-yp-4KU" id="qb0-ox-zgX"/>
-                                            <outlet property="imageView1" destination="h8p-iY-iZw" id="xQo-hY-xVd"/>
-                                            <outlet property="progressView1" destination="OIB-he-R6o" id="a6c-lM-pTv"/>
+                                            <outlet property="button" destination="BMo-yp-4KU" id="d3E-EF-OwW"/>
+                                            <outlet property="imageLoadView" destination="h8p-iY-iZw" id="SqP-nd-0tt"/>
+                                            <outlet property="progressView" destination="OIB-he-R6o" id="GCL-Ct-Zxb"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -91,7 +91,6 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="allLoadBtn" destination="gja-gx-och" id="ado-L2-frb"/>
                         <outlet property="tableView" destination="BfZ-RZ-ncW" id="sLW-pk-5c9"/>
                     </connections>
                 </viewController>

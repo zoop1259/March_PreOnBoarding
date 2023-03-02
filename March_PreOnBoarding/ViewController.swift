@@ -9,7 +9,6 @@ import UIKit
 
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var allLoadBtn: UIButton!
     
     // 이미지 URL 정보
     let imageURLs = [
@@ -38,8 +37,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "MyTableViewCell", for: indexPath) as? MyTableViewCell else { return UITableViewCell() }
         
         // 버튼 클릭 이벤트 설정
-        cell.button1.tag = indexPath.row // 버튼에 tag 설정
-        cell.button1.addTarget(self, action: #selector(downloadImage(_:)), for: .touchUpInside)
+        cell.button.tag = indexPath.row // 버튼에 tag 설정
+        cell.button.addTarget(self, action: #selector(downloadImage(_:)), for: .touchUpInside)
         
         return cell
     }
@@ -47,7 +46,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     @objc func downloadImage(_ sender: UIButton) {
         let row = sender.tag
         guard let cell = tableView.cellForRow(at: IndexPath(row: row, section: 0)) as? MyTableViewCell else { return }
-        //let urlString = "https://example.com/image\(row+1).jpg" // 다운로드할 이미지 URL
         let urlString = imageURLs[row]
         guard let url = URL(string: urlString) else { return }
         
@@ -58,7 +56,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             
             // 다운로드 완료 후 이미지뷰에 이미지 설정
             DispatchQueue.main.async {
-                cell.imageView1.image = UIImage(data: data)
+                cell.imageLoadView.image = UIImage(data: data)
             }
         }
         task.resume()
@@ -68,15 +66,15 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     @IBAction func allLoadBtnTapped(_ sender: Any) {
         for row in 0..<tableView.numberOfRows(inSection: 0) {
             guard let cell = tableView.cellForRow(at: IndexPath(row: row, section: 0)) as? MyTableViewCell else { continue }
-            downloadImage(cell.button1)
+            downloadImage(cell.button)
         }
     }
 }
 
 class MyTableViewCell: UITableViewCell {
-    @IBOutlet weak var imageView1: UIImageView!
-    @IBOutlet weak var progressView1: UIProgressView!
-    @IBOutlet weak var button1: UIButton!
+    @IBOutlet weak var imageLoadView: UIImageView!
+    @IBOutlet weak var progressView: UIProgressView!
+    @IBOutlet weak var button: UIButton!
     
     override func awakeFromNib() {
         super.awakeFromNib()
