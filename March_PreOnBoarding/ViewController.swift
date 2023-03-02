@@ -40,33 +40,38 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         // 버튼 클릭 이벤트 설정
         cell.button1.tag = indexPath.row // 버튼에 tag 설정
         cell.button1.addTarget(self, action: #selector(downloadImage(_:)), for: .touchUpInside)
-
         
         return cell
     }
     
     @objc func downloadImage(_ sender: UIButton) {
-            let row = sender.tag
-            guard let cell = tableView.cellForRow(at: IndexPath(row: row, section: 0)) as? MyTableViewCell else { return }
-            //let urlString = "https://example.com/image\(row+1).jpg" // 다운로드할 이미지 URL
+        let row = sender.tag
+        guard let cell = tableView.cellForRow(at: IndexPath(row: row, section: 0)) as? MyTableViewCell else { return }
+        //let urlString = "https://example.com/image\(row+1).jpg" // 다운로드할 이미지 URL
         let urlString = imageURLs[row]
         guard let url = URL(string: urlString) else { return }
+        
+        // 이미지 다운로드 시작
+        let task = URLSession.shared.downloadTask(with: url) { (location, response, error) in
+            guard let location = location else { return }
+            guard let data = try? Data(contentsOf: location) else { return }
             
-            // 이미지 다운로드 시작
-            let task = URLSession.shared.downloadTask(with: url) { (location, response, error) in
-                guard let location = location else { return }
-                guard let data = try? Data(contentsOf: location) else { return }
-                
-                // 다운로드 완료 후 이미지뷰에 이미지 설정
-                DispatchQueue.main.async {
-                    cell.imageView1.image = UIImage(data: data)
-                }
+            // 다운로드 완료 후 이미지뷰에 이미지 설정
+            DispatchQueue.main.async {
+                cell.imageView1.image = UIImage(data: data)
             }
-            task.resume()
         }
-    
-    
+        task.resume()
+        
     }
+    
+    @IBAction func allLoadBtnTapped(_ sender: Any) {
+        for row in 0..<tableView.numberOfRows(inSection: 0) {
+            guard let cell = tableView.cellForRow(at: IndexPath(row: row, section: 0)) as? MyTableViewCell else { continue }
+            downloadImage(cell.button1)
+        }
+    }
+}
 
 class MyTableViewCell: UITableViewCell {
     @IBOutlet weak var imageView1: UIImageView!
